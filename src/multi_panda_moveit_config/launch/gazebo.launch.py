@@ -24,11 +24,6 @@ def generate_launch_description():
             description='Use simulation time'
         ),
         DeclareLaunchArgument(
-            'paused',
-            default_value='false',
-            description='Start Gazebo in paused mode'
-        ),
-        DeclareLaunchArgument(
             'x',
             default_value='0.0',
             description='X position of the robot'
@@ -53,16 +48,17 @@ def generate_launch_description():
     # Get the path to the robot description package
     robot_description_path = os.path.join(get_package_share_directory('multi_panda_description'))
     robot_moveit_config_path = os.path.join(get_package_share_directory('multi_panda_moveit_config'))
+    gazebo_controllers_path = os.path.join(get_package_share_directory('multi_panda_description'), 'config', 'gazebo_controller_manager.yaml')
     xacro_file_path = os.path.join(robot_moveit_config_path, 'config', 'multi_panda.urdf.xacro')
     robot_state_description = xacro.process_file(xacro_file_path, mappings={'use_sim' : 'true'}).toprettyxml(indent='  ')
 
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
-        output='screen',
+        output='both',
         parameters=[
-            {'robot_description': robot_state_description, 
-            'use_sim_time': LaunchConfiguration('use_sim_time')}
+            {'robot_description': robot_state_description},
+            {'use_sim_time': LaunchConfiguration('use_sim_time')},
         ]
     )
 
@@ -98,6 +94,15 @@ def generate_launch_description():
         output='screen'
     )
 
+    # Load controllers
+    controller_manager = Node(
+        package='controller_manager',
+        executable='ros2_control_node',
+        name='controller_manager',
+        output='both',
+        parameters=[gazebo_controllers_path],
+    )
+
     load_joint_state_broadcaster = Node(
         package='controller_manager',
         executable='spawner',
@@ -130,20 +135,6 @@ def generate_launch_description():
         arguments=['right_panda_hand_controller']
     )
 
-    rviz_config_file = os.path.join(
-        get_package_share_directory('multi_panda_moveit_config'),
-        'rviz',
-        'moveit.rviz'
-    )
-
-    rviz = Node(
-        package='rviz2',
-        executable='rviz2',
-        name='rviz2',
-        output='screen',
-        arguments=['-d', rviz_config_file]
-    )
-
     delay_joint_state_after_spawn = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=spawn_robot,
@@ -160,13 +151,20 @@ def generate_launch_description():
         )
     )
 
+    delay_controller_after_publisher = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=robot_state_publisher,
+            on_exit=[controller_manager]
+        )
+    )
+
     return LaunchDescription([
         arguments,
         robot_state_publisher,
         launch_gazebo,
         spawn_robot,
         bridge,
+        delay_controller_after_publisher,
         delay_joint_state_after_spawn,
-        delay_controllers_after_joint_state,
-        # rviz
+        delay_controllers_after_joint_state
     ])
