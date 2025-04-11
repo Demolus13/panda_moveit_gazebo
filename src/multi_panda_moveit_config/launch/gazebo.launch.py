@@ -8,6 +8,8 @@ from launch_ros.actions import Node
 import xacro
 from launch.actions import ExecuteProcess
 from launch.event_handlers import OnProcessExit
+from launch.substitutions import PathJoinSubstitution
+from launch_ros.substitutions import FindPackageShare
 from launch.actions import RegisterEventHandler, SetEnvironmentVariable
 
 def generate_launch_description():
@@ -77,7 +79,12 @@ def generate_launch_description():
             )
         ),
         launch_arguments=[
-            ('gz_args', ['-r -v 1 ', LaunchConfiguration('world')])
+            ('gz_args', [
+                '-r -v 1 ',
+                PathJoinSubstitution(
+                    [FindPackageShare('multi_panda_description'), 'worlds', LaunchConfiguration('world')]
+                )
+            ])
         ]
     )
 
