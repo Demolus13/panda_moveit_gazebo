@@ -1,0 +1,346 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="single_panda">
+    <xacro:macro name="multiple_panda" params="prefix connected_to robot_x robot_y robot_z">
+        
+        <link name="${prefix}panda_link0">
+            <visual>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/visual/link0.dae"/>
+            </geometry>
+            </visual>
+            <collision>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/collision/link0.stl"/>
+            </geometry>
+            </collision>
+            <inertial>
+            <origin xyz="-0.041018 -0.00014 0.049974" rpy="0 0 0"/>
+            <mass value="0.629769"/>
+            <inertia ixx="0.00315" iyy="0.00388" izz="0.004285" ixy="8.2904E-7" ixz="0.00015" iyz="8.2299E-6"/>
+            </inertial>
+        </link>
+        <link name="${prefix}panda_link1">
+            <visual>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/visual/link1.dae"/>
+            </geometry>
+            </visual>
+            <collision>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/collision/link1.stl"/>
+            </geometry>
+            </collision>
+            <inertial>
+            <origin xyz="0.003875 0.002081 -0.04762" rpy="0 0 0"/>
+            <mass value="4.970684"/>
+            <inertia ixx="0.70337" iyy="0.70661" izz="0.009117" ixy="-0.000139" ixz="0.006772" iyz="0.019169"/>
+            </inertial>
+        </link>
+        <joint name="${prefix}panda_joint1" type="revolute">
+            <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-2.8973" soft_upper_limit="2.8973"/>
+            <origin rpy="0 0 0" xyz="0 0 0.333"/>
+            <parent link="${prefix}panda_link0"/>
+            <child link="${prefix}panda_link1"/>
+            <axis xyz="0 0 1"/>
+            <limit effort="87" lower="-2.9671" upper="2.9671" velocity="2.3925"/>
+            <dynamics D="1" K="7000" damping="0.003" friction="0.0" mu_coulomb="0" mu_viscous="16"/>
+        </joint>
+        <link name="${prefix}panda_link2">
+            <visual>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/visual/link2.dae"/>
+            </geometry>
+            </visual>
+            <collision>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/collision/link2.stl"/>
+            </geometry>
+            </collision>
+            <inertial>
+            <origin xyz="-0.003141 -0.02872 0.003495" rpy="0 0 0"/>
+            <mass value="0.646926"/>
+            <inertia ixx="0.007962" iyy="2.811E-2" izz="2.5995E-2" ixy="-3.925E-3" ixz="1.0254E-2" iyz="7.04E-4"/>
+            </inertial>
+        </link>
+        <joint name="${prefix}panda_joint2" type="revolute">
+            <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-1.7628" soft_upper_limit="1.7628"/>
+            <origin rpy="-1.57079632679 0 0" xyz="0 0 0"/>
+            <parent link="${prefix}panda_link1"/>
+            <child link="${prefix}panda_link2"/>
+            <axis xyz="0 0 1"/>
+            <limit effort="87" lower="-1.8326" upper="1.8326" velocity="2.3925"/>
+            <dynamics D="1" K="7000" damping="0.003" friction="0.0" mu_coulomb="0" mu_viscous="16"/>
+        </joint>
+        <link name="${prefix}panda_link3">
+            <visual>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/visual/link3.dae"/>
+            </geometry>
+            </visual>
+            <collision>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/collision/link3.stl"/>
+            </geometry>
+            </collision>
+            <inertial>
+            <origin xyz="0.027518 0.039252 -0.066502" rpy="0 0 0"/>
+            <mass value="3.228604"/>
+            <inertia ixx="0.037242" iyy="0.036155" izz="0.01083" ixy="-0.004761" ixz="-0.011396" iyz="-0.012805"/>
+            </inertial>
+        </link>
+        <joint name="${prefix}panda_joint3" type="revolute">
+            <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-2.8973" soft_upper_limit="2.8973"/>
+            <origin rpy="1.57079632679 0 0" xyz="0 -0.316 0"/>
+            <parent link="${prefix}panda_link2"/>
+            <child link="${prefix}panda_link3"/>
+            <axis xyz="0 0 1"/>
+            <limit effort="87" lower="-2.9671" upper="2.9671" velocity="2.3925"/>
+            <dynamics D="1" K="7000" damping="0.003" friction="0.0" mu_coulomb="0" mu_viscous="16"/>
+        </joint>
+        <link name="${prefix}panda_link4">
+            <visual>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/visual/link4.dae"/>
+            </geometry>
+            </visual>
+            <collision>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/collision/link4.stl"/>
+            </geometry>
+            </collision>
+            <inertial>
+            <origin xyz="-0.05317 0.104419 0.027454" rpy="0 0 0"/>
+            <mass value="3.587895"/>
+            <inertia ixx="0.025853" iyy="0.019552" izz="0.028323" ixy="0.007796" ixz="-0.001332" iyz="0.008641"/>
+            </inertial>
+        </link>
+        <joint name="${prefix}panda_joint4" type="revolute">
+            <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-3.0718" soft_upper_limit="0.0175"/>
+            <origin rpy="1.57079632679 0 0" xyz="0.0825 0 0"/>
+            <parent link="${prefix}panda_link3"/>
+            <child link="${prefix}panda_link4"/>
+            <axis xyz="0 0 1"/>
+            <limit effort="87" lower="-3.1416" upper="0.0873" velocity="2.3925"/>
+            <dynamics D="1" K="7000" damping="0.003" friction="0.0" mu_coulomb="0" mu_viscous="16"/>
+        </joint>
+        <link name="${prefix}panda_link5">
+            <visual>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/visual/link5.dae"/>
+            </geometry>
+            </visual>
+            <collision>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/collision/link5.stl"/>
+            </geometry>
+            </collision>
+            <inertial>
+            <origin xyz="-0.011953 0.041065 -0.038437" rpy="0 0 0"/>
+            <mass value="1.225946"/>
+            <inertia ixx="0.035549" iyy="0.029474" izz="0.008627" ixy="-0.002117" ixz="-0.004037" iyz="0.000229"/>
+            </inertial>
+        </link>
+        <joint name="${prefix}panda_joint5" type="revolute">
+            <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-2.8973" soft_upper_limit="2.8973"/>
+            <origin rpy="-1.57079632679 0 0" xyz="-0.0825 0.384 0"/>
+            <parent link="${prefix}panda_link4"/>
+            <child link="${prefix}panda_link5"/>
+            <axis xyz="0 0 1"/>
+            <limit effort="12" lower="-2.9671" upper="2.9671" velocity="2.8710"/>
+            <dynamics D="1" K="7000" damping="0.003" friction="0.0" mu_coulomb="0" mu_viscous="16"/>
+        </joint>
+        <link name="${prefix}panda_link6">
+            <visual>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/visual/link6.dae"/>
+            </geometry>
+            </visual>
+            <collision>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/collision/link6.stl"/>
+            </geometry>
+            </collision>
+            <inertial>
+            <origin xyz="0.060149 -0.014117 -0.010517" rpy="0 0 0"/>
+            <mass value="1.666555"/>
+            <inertia ixx="0.001964" iyy="0.004354" izz="0.005433" ixy="0.000109" ixz="-0.001158" iyz="0.000341"/>
+            </inertial>
+        </link>
+        <joint name="${prefix}panda_joint6" type="revolute">
+            <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-0.0175" soft_upper_limit="3.7525"/>
+            <origin rpy="1.57079632679 0 0" xyz="0 0 0"/>
+            <parent link="${prefix}panda_link5"/>
+            <child link="${prefix}panda_link6"/>
+            <axis xyz="0 0 1"/>
+            <limit effort="12" lower="-0.0873" upper="3.8223" velocity="2.8710"/>
+            <dynamics D="1" K="7000" damping="0.003" friction="0.0" mu_coulomb="0" mu_viscous="16"/>
+        </joint>
+        <link name="${prefix}panda_link7">
+            <visual>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/visual/link7.dae"/>
+            </geometry>
+            </visual>
+            <collision>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/collision/link7.stl"/>
+            </geometry>
+            </collision>
+            <inertial>
+            <origin xyz="0.010517 -0.004252 0.061597" rpy="0 0 0"/>
+            <mass value="0.735522"/>
+            <inertia ixx="0.012516" iyy="0.010027" izz="0.004815" ixy="-0.000428" ixz="-0.00119" iyz="-0.000741"/>
+            </inertial>
+        </link>
+        <joint name="${prefix}panda_joint7" type="revolute">
+            <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-2.8973" soft_upper_limit="2.8973"/>
+            <origin rpy="1.57079632679 0 0" xyz="0.088 0 0"/>
+            <parent link="${prefix}panda_link6"/>
+            <child link="${prefix}panda_link7"/>
+            <axis xyz="0 0 1"/>
+            <limit effort="12" lower="-2.9671" upper="2.9671" velocity="2.8710"/>
+            <dynamics D="1" K="7000" damping="0.003" friction="0.0" mu_coulomb="0" mu_viscous="16"/>
+        </joint>
+        <link name="${prefix}panda_link8"/>
+        <joint name="${prefix}panda_joint8" type="fixed">
+            <origin rpy="0 0 0" xyz="0 0 0.107"/>
+            <parent link="${prefix}panda_link7"/>
+            <child link="${prefix}panda_link8"/>
+            <axis xyz="0 0 0"/>
+        </joint>
+        <joint name="${prefix}panda_hand_joint" type="fixed">
+            <parent link="${prefix}panda_link8"/>
+            <child link="${prefix}panda_hand"/>
+            <origin rpy="0 0 -0.785398163397" xyz="0 0 0"/>
+        </joint>
+        <link name="${prefix}panda_hand">
+            <visual>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/visual/hand.dae"/>
+            </geometry>
+            </visual>
+            <collision>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/collision/hand.stl"/>
+            </geometry>
+            </collision>
+            <inertial>
+            <origin xyz="-0.01 0 0.03" rpy="0 0 0"/>
+            <mass value="0.73"/>
+            <inertia ixx="0.001" iyy="0.0025" izz="0.0017" ixy="0" ixz="0" iyz="0"/>
+            </inertial>
+        </link>
+        <link name="${prefix}panda_leftfinger">
+            <visual>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/visual/finger.dae"/>
+            </geometry>
+            </visual>
+            <collision>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/collision/finger.stl"/>
+            </geometry>
+            </collision>
+            <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.015"/>
+            <inertia ixx="2.375E-6" iyy="2.375E-6" izz="7.5E-7" ixy="0" ixz="0" iyz="0"/>
+            </inertial>
+        </link>
+        <link name="${prefix}panda_rightfinger">
+            <visual>
+            <origin rpy="0 0 3.14159265359" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/visual/finger.dae"/>
+            </geometry>
+            </visual>
+            <collision>
+            <origin rpy="0 0 3.14159265359" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="file:///home/demolus/colcon_ws/install/multi_panda_description/share/multi_panda_description/meshes/collision/finger.stl"/>
+            </geometry>
+            </collision>
+            <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.15"/>
+            <inertia ixx="2.375E-6" iyy="2.375E-6" izz="7.5E-7" ixy="0" ixz="0" iyz="0"/>
+            </inertial>
+        </link>
+        <joint name="${prefix}panda_finger_joint1" type="prismatic">
+            <parent link="${prefix}panda_hand"/>
+            <child link="${prefix}panda_leftfinger"/>
+            <origin rpy="0 0 0" xyz="0 0 0.0584"/>
+            <axis xyz="0 1 0"/>
+            <limit effort="20" lower="0.0" upper="0.04" velocity="0.2"/>
+            <dynamics damping="0.3"/>
+        </joint>
+        <joint name="${prefix}panda_finger_joint2" type="prismatic">
+            <parent link="${prefix}panda_hand"/>
+            <child link="${prefix}panda_rightfinger"/>
+            <origin rpy="0 0 0" xyz="0 0 0.0584"/>
+            <axis xyz="0 -1 0"/>
+            <limit effort="20" lower="0.0" upper="0.04" velocity="0.2"/>
+            <mimic joint="${prefix}panda_finger_joint1"/>
+            <dynamics damping="0.3"/>
+        </joint>
+        <joint name="${prefix}panda_spawn_joint" type="fixed">
+            <origin xyz="${robot_x} ${robot_y} ${robot_z}" rpy="0 0 0"/>
+            <parent link="${connected_to}"/>
+            <child link="${prefix}panda_link0"/>
+        </joint>
+
+        <xacro:macro name="SimpleTransmission" params="trans joint actuator">
+            <transmission name="${trans}">
+                <type>transmission_interface/SimpleTransmission</type>
+                <joint name="${joint}">
+                    <hardwareInterface>PositionJointInterface</hardwareInterface>
+                </joint>
+                <actuator name="${actuator}">
+                    <hardwareInterface>PositionJointInterface</hardwareInterface>
+                    <mechanicalReduction>1</mechanicalReduction>
+                </actuator>
+            </transmission>
+        </xacro:macro>
+
+        <xacro:macro name="Link" params="reference">
+            <gazebo reference="${reference}">
+            <kp>1000000.0</kp>
+            <kd>100.0</kd>
+            <mu1>30.0</mu1>
+            <mu2>30.0</mu2>
+            <maxVel>1.0</maxVel>
+            <minDepth>0.001</minDepth>
+            </gazebo>
+        </xacro:macro>
+
+        <xacro:Link reference="${prefix}panda_link0"/>
+        <xacro:Link reference="${prefix}panda_link1"/>
+        <xacro:Link reference="${prefix}panda_link2"/>
+        <xacro:Link reference="${prefix}panda_link3"/>
+        <xacro:Link reference="${prefix}panda_link4"/>
+        <xacro:Link reference="${prefix}panda_link5"/>
+        <xacro:Link reference="${prefix}panda_link6"/>
+        <xacro:Link reference="${prefix}panda_link7"/>
+        <xacro:Link reference="${prefix}panda_link8"/>
+        <xacro:Link reference="${prefix}panda_hand"/>
+        <xacro:Link reference="${prefix}panda_leftfinger"/>
+        <xacro:Link reference="${prefix}panda_rightfinger"/>
+
+        <xacro:SimpleTransmission trans="${prefix}trans1" joint="${prefix}panda_joint1" actuator="${prefix}panda_joint1"/>
+        <xacro:SimpleTransmission trans="${prefix}trans2" joint="${prefix}panda_joint2" actuator="${prefix}panda_joint2"/>
+        <xacro:SimpleTransmission trans="${prefix}trans3" joint="${prefix}panda_joint3" actuator="${prefix}panda_joint3"/>
+        <xacro:SimpleTransmission trans="${prefix}trans4" joint="${prefix}panda_joint4" actuator="${prefix}panda_joint4"/>
+        <xacro:SimpleTransmission trans="${prefix}trans5" joint="${prefix}panda_joint5" actuator="${prefix}panda_joint5"/>
+        <xacro:SimpleTransmission trans="${prefix}trans6" joint="${prefix}panda_joint6" actuator="${prefix}panda_joint6"/>
+        <xacro:SimpleTransmission trans="${prefix}trans7" joint="${prefix}panda_joint7" actuator="${prefix}panda_joint7"/>
+        <xacro:SimpleTransmission trans="${prefix}trans8" joint="${prefix}panda_joint8" actuator="${prefix}panda_joint8"/>
+        <xacro:SimpleTransmission trans="${prefix}trans9" joint="${prefix}panda_finger_joint1" actuator="${prefix}panda_finger_joint1"/>
+        <xacro:SimpleTransmission trans="${prefix}trans10" joint="${prefix}panda_finger_joint2" actuator="${prefix}panda_finger_joint2"/>
+        <xacro:SimpleTransmission trans="${prefix}trans11" joint="${prefix}panda_hand_joint" actuator="${prefix}panda_hand_joint"/>
+    
+    </xacro:macro>
+
+    <!-- Single instance of the Panda arm -->
+    <!-- <xacro:multiple_panda prefix="" connected_to="world" robot_x="0.0" robot_y="0.0" robot_z="0.0"/> -->
+
+</robot>
