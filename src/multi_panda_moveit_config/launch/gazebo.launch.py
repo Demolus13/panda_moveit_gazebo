@@ -8,7 +8,7 @@ from launch_ros.actions import Node
 import xacro
 from launch.actions import ExecuteProcess
 from launch.event_handlers import OnProcessExit
-from launch.actions import RegisterEventHandler
+from launch.actions import RegisterEventHandler, SetEnvironmentVariable
 
 def generate_launch_description():
     # Declare arguments
@@ -60,6 +60,11 @@ def generate_launch_description():
             {'robot_description': robot_state_description},
             {'use_sim_time': LaunchConfiguration('use_sim_time')},
         ]
+    )
+
+    gazebo_resource_path = SetEnvironmentVariable(
+        name='GAZEBO_RESOURCE_PATH',
+        value=[os.path.join(robot_description_path, 'worlds')]
     )
 
     # Launch Gazebo with the specified world
@@ -161,6 +166,7 @@ def generate_launch_description():
     return LaunchDescription([
         arguments,
         robot_state_publisher,
+        gazebo_resource_path,
         launch_gazebo,
         spawn_robot,
         bridge,

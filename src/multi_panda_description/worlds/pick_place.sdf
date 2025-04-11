@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="default">
+
+    <!-- Ground plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <!-- Sun for lighting -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Small vertical stick (a thin tall box) -->
+    <model name="vertical_stick">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.05 0.05 0.5</size> <!-- width, depth, height -->
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.1 0.1 1</ambient>
+            <diffuse>0.8 0.2 0.2 1</diffuse>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.05 0.05 0.5</size>
+            </box>
+          </geometry>
+        </collision>
+        <pose>0 0 0.25 0 0 0</pose> <!-- Stick standing upright on ground -->
+      </link>
+    </model>
+
+  </world>
+</sdf>
