@@ -21,6 +21,7 @@ public:
         : node_(node),
           move_group_(node, "dual_panda_arm"),
           left_hand_group_(node, "left_panda_hand"),
+          right_hand_group_(node, "right_panda_hand"),
           planning_scene_interface_()
     {
         move_group_.setMaxVelocityScalingFactor(0.25);
@@ -34,40 +35,75 @@ public:
         waitForValidState();
 
         // Open gripper
-        controlGripper(0.04); // open
+        controlLeftGripper(0.04);  // open
+        controlRightGripper(0.04); // open
         std::this_thread::sleep_for(1s);
 
         // Move to pick pose
-        geometry_msgs::msg::PoseStamped pick_pose;
-        pick_pose.header.frame_id = "world";
-        pick_pose.pose.position.x = 0.35;
-        pick_pose.pose.position.y = -0.25;
-        pick_pose.pose.position.z = 0.4;
-        pick_pose.pose.orientation.w = 0.0;
+        tf2::Quaternion orientation;
+        orientation.setRPY(-M_PI, 0, 0); 
 
-        move_group_.setPoseTarget(pick_pose, "left_panda_link8");
+        geometry_msgs::msg::PoseStamped left_pick_pose;
+        left_pick_pose.header.frame_id = "world";
+        left_pick_pose.pose.position.x = 0.35;
+        left_pick_pose.pose.position.y = -0.25;
+        left_pick_pose.pose.position.z = 0.27;
+        left_pick_pose.pose.orientation.x = orientation.x();
+        left_pick_pose.pose.orientation.y = orientation.y();
+        left_pick_pose.pose.orientation.z = orientation.z();
+        left_pick_pose.pose.orientation.w = orientation.w();
+
+        geometry_msgs::msg::PoseStamped right_pick_pose;
+        right_pick_pose.header.frame_id = "world";
+        right_pick_pose.pose.position.x = 0.35;
+        right_pick_pose.pose.position.y = 0.25;
+        right_pick_pose.pose.position.z = 0.27;
+        right_pick_pose.pose.orientation.x = orientation.x();
+        right_pick_pose.pose.orientation.y = orientation.y();
+        right_pick_pose.pose.orientation.z = orientation.z();
+        right_pick_pose.pose.orientation.w = orientation.w();
+
+        move_group_.setPoseTarget(left_pick_pose, "left_panda_link8");
+        move_group_.setPoseTarget(right_pick_pose, "right_panda_link8");
         planAndExecute("Pick pose");
 
         std::this_thread::sleep_for(1s);
 
         // Close gripper
-        controlGripper(0.015); // closed
+        controlLeftGripper(0.015);  // closed
+        controlRightGripper(0.015); // closed
         std::this_thread::sleep_for(1s);
 
         // Attach object
         planning_scene_interface_.applyAttachedCollisionObject(
-            createAttachedObject("vertical_stick_1", "left_panda_leftfinger"));
+            createLeftAttachedObject("vertical_stick_1", "left_panda_leftfinger"));
+        planning_scene_interface_.applyAttachedCollisionObject(
+            createRightAttachedObject("vertical_stick_2", "right_panda_leftfinger"));
         RCLCPP_INFO(node_->get_logger(), "Object attached to gripper");
 
         // Move to place pose
-        geometry_msgs::msg::PoseStamped place_pose;
-        place_pose.header.frame_id = "world";
-        place_pose.pose.position.x = 0.6;
-        place_pose.pose.position.y = -0.2;
-        place_pose.pose.position.z = 0.4;
-        place_pose.pose.orientation.w = 1.0;
+        geometry_msgs::msg::PoseStamped left_place_pose;
+        left_place_pose.header.frame_id = "world";
+        left_place_pose.pose.position.x = 0.6;
+        left_place_pose.pose.position.y = -0.2;
+        left_place_pose.pose.position.z = 0.4;
+        left_place_pose.pose.orientation.x = orientation.x();
+        left_place_pose.pose.orientation.y = orientation.y();
+        left_place_pose.pose.orientation.z = orientation.z();
+        left_place_pose.pose.orientation.w = orientation.w();
 
-        move_group_.setPoseTarget(place_pose, "left_panda_link8");
+        geometry_msgs::msg::PoseStamped right_place_pose;
+        right_place_pose.header.frame_id = "world";
+        right_place_pose.pose.position.x = 0.3;
+        right_place_pose.pose.position.y = 0.3;
+        right_place_pose.pose.position.z = 0.4;
+        right_place_pose.pose.orientation.x = orientation.x();
+        right_place_pose.pose.orientation.y = orientation.y();
+        right_place_pose.pose.orientation.z = orientation.z();
+        right_place_pose.pose.orientation.w = orientation.w();
+
+        move_group_.setPoseTarget(left_place_pose, "left_panda_link8");
+        move_group_.setPoseTarget(right_place_pose, "right_panda_link8");
         planAndExecute("Place pose");
 
         std::this_thread::sleep_for(1s);
@@ -75,18 +111,22 @@ public:
         // Detach object
         planning_scene_interface_.applyAttachedCollisionObject(
             createDetachedObject("vertical_stick_1"));
+        planning_scene_interface_.applyAttachedCollisionObject(
+            createDetachedObject("vertical_stick_2"));
         RCLCPP_INFO(node_->get_logger(), "Object detached from gripper");
 
         std::this_thread::sleep_for(1s);
 
         // Open gripper
-        controlGripper(0.04); // open
+        controlLeftGripper(0.04);
+        controlRightGripper(0.04);
     }
 
 private:
     rclcpp::Node::SharedPtr node_;
     moveit::planning_interface::MoveGroupInterface move_group_;
     moveit::planning_interface::MoveGroupInterface left_hand_group_;
+    moveit::planning_interface::MoveGroupInterface right_hand_group_;
     moveit::planning_interface::PlanningSceneInterface planning_scene_interface_;
 
     void waitForValidState()
@@ -118,7 +158,7 @@ private:
         }
     }
 
-    void controlGripper(double position)
+    void controlLeftGripper(double position)
     {
         std::map<std::string, double> target;
         target["left_panda_finger_joint1"] = position;
@@ -128,7 +168,17 @@ private:
         RCLCPP_INFO(node_->get_logger(), "Gripper moved to position %.3f", position);
     }
 
-    moveit_msgs::msg::AttachedCollisionObject createAttachedObject(const std::string &object_id, const std::string &link_name)
+    void controlRightGripper(double position)
+    {
+        std::map<std::string, double> target;
+        target["right_panda_finger_joint1"] = position;
+        target["right_panda_finger_joint2"] = position;
+        right_hand_group_.setJointValueTarget(target);
+        right_hand_group_.move();
+        RCLCPP_INFO(node_->get_logger(), "Gripper moved to position %.3f", position);
+    }
+
+    moveit_msgs::msg::AttachedCollisionObject createLeftAttachedObject(const std::string &object_id, const std::string &link_name)
     {
         moveit_msgs::msg::AttachedCollisionObject attached_object;
         attached_object.link_name = link_name;
@@ -137,6 +187,19 @@ private:
 
         // Specify touch links (fingers allowed to touch object)
         attached_object.touch_links = {"left_panda_leftfinger", "left_panda_rightfinger"};
+
+        return attached_object;
+    }
+
+    moveit_msgs::msg::AttachedCollisionObject createRightAttachedObject(const std::string &object_id, const std::string &link_name)
+    {
+        moveit_msgs::msg::AttachedCollisionObject attached_object;
+        attached_object.link_name = link_name;
+        attached_object.object.id = object_id;
+        attached_object.object.operation = attached_object.object.ADD;
+
+        // Specify touch links (fingers allowed to touch object)
+        attached_object.touch_links = {"right_panda_leftfinger", "right_panda_rightfinger"};
 
         return attached_object;
     }
