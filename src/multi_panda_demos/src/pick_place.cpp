@@ -1,6 +1,7 @@
 #include <rclcpp/rclcpp.hpp>
-#include <moveit/move_group_interface/move_group_interface.h>
-#include <moveit/planning_scene_interface/planning_scene_interface.h>
+#include <moveit/move_group_interface/move_group_interface.hpp>
+#include <moveit/planning_scene_interface/planning_scene_interface.hpp>
+#include <geometric_shapes/shape_operations.h>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <moveit_msgs/msg/collision_object.hpp>
 #include <moveit_msgs/msg/attached_collision_object.hpp>
@@ -241,6 +242,36 @@ private:
         stick2.id = "vertical_stick_2";
         stick2.primitive_poses[0].position.y = 0.25;
         collision_objects.push_back(stick2);
+
+        // // Mesh of a coffee cup
+        // moveit_msgs::msg::CollisionObject cup;
+        // cup.header.frame_id = "world";
+        // cup.id = "cup";
+
+        // // Create the mesh using functions provided by geometric_shapes.
+        // shapes::Mesh* m = shapes::createMeshFromResource("package://multi_panda_demos/meshes/cup.stl");
+        // if (!m)
+        // {
+        // RCLCPP_ERROR(node_->get_logger(), "Failed to load mesh from resource.");
+        // return;
+        // }
+        // shapes::ShapeMsg mesh_msg;
+        // shapes::constructMsgFromShape(m, mesh_msg);
+
+        // // Convert the shape message to a mesh (using boost::get)
+        // shape_msgs::msg::Mesh mesh = boost::get<shape_msgs::msg::Mesh>(mesh_msg);
+
+        // geometry_msgs::msg::Pose mesh_pose;
+        // mesh_pose.position.x = 0.5;
+        // mesh_pose.position.y = 0.2;
+        // mesh_pose.position.z = 0.1;
+        // mesh_pose.orientation.w = 1.0;
+
+        // cup.meshes.push_back(mesh);
+        // cup.mesh_poses.push_back(mesh_pose);
+        // cup.operation = cup.ADD;
+
+        // collision_objects.push_back(cup);
 
         planning_scene_interface_.applyCollisionObjects(collision_objects);
         RCLCPP_INFO(node_->get_logger(), "Spawned SDF-based collision objects.");

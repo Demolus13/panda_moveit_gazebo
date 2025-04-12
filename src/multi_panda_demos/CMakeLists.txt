@@ -9,6 +9,10 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
+find_package(moveit_ros_planning REQUIRED)
+find_package(moveit_ros_move_group REQUIRED)
+find_package(geometric_shapes REQUIRED)
+
 
 add_executable(
   pick_place
@@ -30,6 +34,7 @@ ament_target_dependencies(pick_place
   moveit_ros_planning
   moveit_ros_move_group
   geometry_msgs
+  geometric_shapes
 )
 
 install(
@@ -39,7 +44,7 @@ install(
 )
 
 install(
-  DIRECTORY launch
+  DIRECTORY launch meshes
   DESTINATION share/${PROJECT_NAME}/
 )
 
