@@ -40,87 +40,90 @@ public:
         controlRightGripper(0.04); // open
         std::this_thread::sleep_for(1s);
 
-        // Move to pick pose
-        tf2::Quaternion orientation;
-        orientation.setRPY(-M_PI, 0, 0); 
+        controlLeftGripper(0.0);  // open
+        controlRightGripper(0.0); // open
 
-        geometry_msgs::msg::PoseStamped left_pick_pose;
-        left_pick_pose.header.frame_id = "world";
-        left_pick_pose.pose.position.x = 0.35;
-        left_pick_pose.pose.position.y = -0.25;
-        left_pick_pose.pose.position.z = 0.27;
-        left_pick_pose.pose.orientation.x = orientation.x();
-        left_pick_pose.pose.orientation.y = orientation.y();
-        left_pick_pose.pose.orientation.z = orientation.z();
-        left_pick_pose.pose.orientation.w = orientation.w();
+        // // Move to pick pose
+        // tf2::Quaternion orientation;
+        // orientation.setRPY(-M_PI, 0, 0); 
 
-        geometry_msgs::msg::PoseStamped right_pick_pose;
-        right_pick_pose.header.frame_id = "world";
-        right_pick_pose.pose.position.x = 0.35;
-        right_pick_pose.pose.position.y = 0.25;
-        right_pick_pose.pose.position.z = 0.27;
-        right_pick_pose.pose.orientation.x = orientation.x();
-        right_pick_pose.pose.orientation.y = orientation.y();
-        right_pick_pose.pose.orientation.z = orientation.z();
-        right_pick_pose.pose.orientation.w = orientation.w();
+        // geometry_msgs::msg::PoseStamped left_pick_pose;
+        // left_pick_pose.header.frame_id = "world";
+        // left_pick_pose.pose.position.x = 0.35;
+        // left_pick_pose.pose.position.y = -0.25;
+        // left_pick_pose.pose.position.z = 0.27;
+        // left_pick_pose.pose.orientation.x = orientation.x();
+        // left_pick_pose.pose.orientation.y = orientation.y();
+        // left_pick_pose.pose.orientation.z = orientation.z();
+        // left_pick_pose.pose.orientation.w = orientation.w();
 
-        move_group_.setPoseTarget(left_pick_pose, "left_panda_link8");
-        move_group_.setPoseTarget(right_pick_pose, "right_panda_link8");
-        planAndExecute("Pick pose");
+        // geometry_msgs::msg::PoseStamped right_pick_pose;
+        // right_pick_pose.header.frame_id = "world";
+        // right_pick_pose.pose.position.x = 0.35;
+        // right_pick_pose.pose.position.y = 0.25;
+        // right_pick_pose.pose.position.z = 0.27;
+        // right_pick_pose.pose.orientation.x = orientation.x();
+        // right_pick_pose.pose.orientation.y = orientation.y();
+        // right_pick_pose.pose.orientation.z = orientation.z();
+        // right_pick_pose.pose.orientation.w = orientation.w();
 
-        std::this_thread::sleep_for(1s);
+        // move_group_.setPoseTarget(left_pick_pose, "left_panda_link8");
+        // move_group_.setPoseTarget(right_pick_pose, "right_panda_link8");
+        // planAndExecute("Pick pose");
 
-        // Close gripper
-        controlLeftGripper(0.015);  // closed
-        controlRightGripper(0.015); // closed
-        std::this_thread::sleep_for(1s);
+        // std::this_thread::sleep_for(1s);
+
+        // // Close gripper
+        // controlLeftGripper(0.0);  // closed
+        // controlRightGripper(0.0); // closed
+        // std::this_thread::sleep_for(1s);
 
         // Attach object
-        planning_scene_interface_.applyAttachedCollisionObject(
-            createLeftAttachedObject("vertical_stick_1", "left_panda_leftfinger"));
-        planning_scene_interface_.applyAttachedCollisionObject(
-            createRightAttachedObject("vertical_stick_2", "right_panda_leftfinger"));
-        RCLCPP_INFO(node_->get_logger(), "Object attached to gripper");
+        // planning_scene_interface_.applyAttachedCollisionObject(
+        //     createLeftAttachedObject("vertical_stick_1", "left_panda_leftfinger"));
+        // planning_scene_interface_.applyAttachedCollisionObject(
+        //     createRightAttachedObject("vertical_stick_2", "right_panda_leftfinger"));
+        // RCLCPP_INFO(node_->get_logger(), "Object attached to gripper");
 
-        // Move to place pose
-        geometry_msgs::msg::PoseStamped left_place_pose;
-        left_place_pose.header.frame_id = "world";
-        left_place_pose.pose.position.x = 0.6;
-        left_place_pose.pose.position.y = -0.2;
-        left_place_pose.pose.position.z = 0.4;
-        left_place_pose.pose.orientation.x = orientation.x();
-        left_place_pose.pose.orientation.y = orientation.y();
-        left_place_pose.pose.orientation.z = orientation.z();
-        left_place_pose.pose.orientation.w = orientation.w();
+        // // Move to place pose
+        // geometry_msgs::msg::PoseStamped left_place_pose;
+        // left_place_pose.header.frame_id = "world";
+        // left_place_pose.pose.position.x = 0.6;
+        // left_place_pose.pose.position.y = -0.2;
+        // left_place_pose.pose.position.z = 0.4;
+        // left_place_pose.pose.orientation.x = orientation.x();
+        // left_place_pose.pose.orientation.y = orientation.y();
+        // left_place_pose.pose.orientation.z = orientation.z();
+        // left_place_pose.pose.orientation.w = orientation.w();
 
-        geometry_msgs::msg::PoseStamped right_place_pose;
-        right_place_pose.header.frame_id = "world";
-        right_place_pose.pose.position.x = 0.3;
-        right_place_pose.pose.position.y = 0.3;
-        right_place_pose.pose.position.z = 0.4;
-        right_place_pose.pose.orientation.x = orientation.x();
-        right_place_pose.pose.orientation.y = orientation.y();
-        right_place_pose.pose.orientation.z = orientation.z();
-        right_place_pose.pose.orientation.w = orientation.w();
+        // geometry_msgs::msg::PoseStamped right_place_pose;
+        // right_place_pose.header.frame_id = "world";
+        // right_place_pose.pose.position.x = 0.3;
+        // right_place_pose.pose.position.y = 0.3;
+        // right_place_pose.pose.position.z = 0.4;
+        // right_place_pose.pose.orientation.x = orientation.x();
+        // right_place_pose.pose.orientation.y = orientation.y();
+        // right_place_pose.pose.orientation.z = orientation.z();
+        // right_place_pose.pose.orientation.w = orientation.w();
 
-        move_group_.setPoseTarget(left_place_pose, "left_panda_link8");
-        move_group_.setPoseTarget(right_place_pose, "right_panda_link8");
-        planAndExecute("Place pose");
+        // move_group_.setPoseTarget(left_place_pose, "left_panda_link8");
+        // move_group_.setPoseTarget(right_place_pose, "right_panda_link8");
+        // planAndExecute("Place pose");
 
-        std::this_thread::sleep_for(1s);
+        // std::this_thread::sleep_for(1s);
 
         // Detach object
-        planning_scene_interface_.applyAttachedCollisionObject(
-            createDetachedObject("vertical_stick_1"));
-        planning_scene_interface_.applyAttachedCollisionObject(
-            createDetachedObject("vertical_stick_2"));
-        RCLCPP_INFO(node_->get_logger(), "Object detached from gripper");
+        // planning_scene_interface_.applyAttachedCollisionObject(
+        //     createDetachedObject("vertical_stick_1"));
+        // planning_scene_interface_.applyAttachedCollisionObject(
+        //     createDetachedObject("vertical_stick_2"));
+        // RCLCPP_INFO(node_->get_logger(), "Object detached from gripper");
 
-        std::this_thread::sleep_for(1s);
+        // std::this_thread::sleep_for(1s);
 
-        // Open gripper
-        controlLeftGripper(0.04);
-        controlRightGripper(0.04);
+        // // Open gripper
+        // controlLeftGripper(0.04);
+        // controlRightGripper(0.04);
     }
 
 private:
@@ -218,60 +221,60 @@ private:
         std::vector<moveit_msgs::msg::CollisionObject> collision_objects;
 
         // Vertical Stick 1
-        moveit_msgs::msg::CollisionObject stick1;
-        stick1.header.frame_id = "world";
-        stick1.id = "vertical_stick_1";
+        // moveit_msgs::msg::CollisionObject stick1;
+        // stick1.header.frame_id = "world";
+        // stick1.id = "vertical_stick_1";
 
-        shape_msgs::msg::SolidPrimitive stick_shape;
-        stick_shape.type = stick_shape.BOX;
-        stick_shape.dimensions = {0.02, 0.02, 0.2};
+        // shape_msgs::msg::SolidPrimitive stick_shape;
+        // stick_shape.type = stick_shape.BOX;
+        // stick_shape.dimensions = {0.02, 0.02, 0.2};
 
-        geometry_msgs::msg::Pose stick1_pose;
-        stick1_pose.position.x = 0.35;
-        stick1_pose.position.y = -0.25;
-        stick1_pose.position.z = 0.1;
-        stick1_pose.orientation.w = 1.0;
+        // geometry_msgs::msg::Pose stick1_pose;
+        // stick1_pose.position.x = 0.35;
+        // stick1_pose.position.y = -0.25;
+        // stick1_pose.position.z = 0.1;
+        // stick1_pose.orientation.w = 1.0;
 
-        stick1.primitives.push_back(stick_shape);
-        stick1.primitive_poses.push_back(stick1_pose);
-        stick1.operation = stick1.ADD;
-        collision_objects.push_back(stick1);
+        // stick1.primitives.push_back(stick_shape);
+        // stick1.primitive_poses.push_back(stick1_pose);
+        // stick1.operation = stick1.ADD;
+        // collision_objects.push_back(stick1);
 
-        // Vertical Stick 2
-        moveit_msgs::msg::CollisionObject stick2 = stick1;
-        stick2.id = "vertical_stick_2";
-        stick2.primitive_poses[0].position.y = 0.25;
-        collision_objects.push_back(stick2);
+        // // Vertical Stick 2
+        // moveit_msgs::msg::CollisionObject stick2 = stick1;
+        // stick2.id = "vertical_stick_2";
+        // stick2.primitive_poses[0].position.y = 0.25;
+        // collision_objects.push_back(stick2);
 
-        // Mesh of a coffee cup
-        moveit_msgs::msg::CollisionObject mesh_object;
-        mesh_object.header.frame_id = "world";
-        mesh_object.id = "mesh_object";
+        // // Mesh of a coffee cup
+        // moveit_msgs::msg::CollisionObject mesh_object;
+        // mesh_object.header.frame_id = "world";
+        // mesh_object.id = "mesh_object";
 
-        // Create the mesh using functions provided by geometric_shapes.
-        shapes::Mesh* m = shapes::createMeshFromResource("package://multi_panda_description/meshes/visual/link0.dae");
-        if (!m)
-        {
-        RCLCPP_ERROR(node_->get_logger(), "Failed to load mesh from resource.");
-        return;
-        }
-        shapes::ShapeMsg mesh_msg;
-        shapes::constructMsgFromShape(m, mesh_msg);
+        // // Create the mesh using functions provided by geometric_shapes.
+        // shapes::Mesh* m = shapes::createMeshFromResource("package://multi_panda_description/meshes/visual/link0.dae");
+        // if (!m)
+        // {
+        // RCLCPP_ERROR(node_->get_logger(), "Failed to load mesh from resource.");
+        // return;
+        // }
+        // shapes::ShapeMsg mesh_msg;
+        // shapes::constructMsgFromShape(m, mesh_msg);
 
-        // Convert the shape message to a mesh (using boost::get)
-        shape_msgs::msg::Mesh mesh = boost::get<shape_msgs::msg::Mesh>(mesh_msg);
+        // // Convert the shape message to a mesh (using boost::get)
+        // shape_msgs::msg::Mesh mesh = boost::get<shape_msgs::msg::Mesh>(mesh_msg);
 
-        geometry_msgs::msg::Pose mesh_pose;
-        mesh_pose.position.x = 0.0;
-        mesh_pose.position.y = 0.0;
-        mesh_pose.position.z = 0.0;
-        mesh_pose.orientation.w = 1.0;
+        // geometry_msgs::msg::Pose mesh_pose;
+        // mesh_pose.position.x = 0.0;
+        // mesh_pose.position.y = 0.0;
+        // mesh_pose.position.z = 0.0;
+        // mesh_pose.orientation.w = 1.0;
 
-        mesh_object.meshes.push_back(mesh);
-        mesh_object.mesh_poses.push_back(mesh_pose);
-        mesh_object.operation = mesh_object.ADD;
+        // mesh_object.meshes.push_back(mesh);
+        // mesh_object.mesh_poses.push_back(mesh_pose);
+        // mesh_object.operation = mesh_object.ADD;
 
-        collision_objects.push_back(mesh_object);
+        // collision_objects.push_back(mesh_object);
 
         planning_scene_interface_.applyCollisionObjects(collision_objects);
         RCLCPP_INFO(node_->get_logger(), "Spawned SDF-based collision objects.");

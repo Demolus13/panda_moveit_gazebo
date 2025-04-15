@@ -6,6 +6,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 import xacro
+from pathlib import Path
 from launch.actions import ExecuteProcess
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import PathJoinSubstitution
@@ -65,9 +66,12 @@ def generate_launch_description():
     )
 
     gazebo_resource_path = SetEnvironmentVariable(
-        name='GAZEBO_RESOURCE_PATH',
-        value=[os.path.join(robot_description_path, 'worlds')]
-    )
+        name='GZ_SIM_RESOURCE_PATH',
+        value=[
+            os.path.join(robot_description_path, 'worlds'), ':' +
+            str(Path(robot_description_path).parent.resolve())
+            ]
+        )
 
     # Launch Gazebo with the specified world
     launch_gazebo = IncludeLaunchDescription(
@@ -79,12 +83,11 @@ def generate_launch_description():
             )
         ),
         launch_arguments=[
-            ('gz_args', [
-                '-r -v 1 ',
-                PathJoinSubstitution(
-                    [FindPackageShare('multi_panda_description'), 'worlds', LaunchConfiguration('world')]
-                )
-            ])
+            ('gz_args', [LaunchConfiguration('world'),
+                            '.sdf',
+                            ' -v 4',
+                            ' -r']
+            )
         ]
     )
 
